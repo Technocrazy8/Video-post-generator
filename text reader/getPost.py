@@ -12,8 +12,11 @@ def authenticate():
     if importlib.util.find_spec("requests") == None:
         subprocess.run(["python","-m","pip","install","requests"])
     reddit = praw.Reddit(
-        client_id=USER,
-        password=PASS
+        client_id=CID,
+        client_secret=SEC,
+        password=PASS,
+        user_agent="foo",
+        username=USER
     )
     print(reddit.user.me)
 
@@ -39,7 +42,12 @@ if __name__ == "__main__":
     if importlib.util.find_spec("dotenv") == None:
         subprocess.run(["pip","install","python-dotenv"])
     load_dotenv()
+    # if importlib.util.find_spec("requests") ==None:
+    #     subprocess.run(["pip","install","python-dotenv"])
     USER = os.getenv('DEFAULT_USER')
     PASS = os.getenv('DEFAULT_PASS')
+    SEC = os.getenv('SECRET')
+    CID = os.getenv('CLIENT_ID')
+    print(CID)
     #getPost("ffo")
     authenticate()
