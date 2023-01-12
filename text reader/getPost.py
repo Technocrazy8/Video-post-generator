@@ -1,5 +1,6 @@
 import json, urllib, importlib.util, requests, subprocess, os, praw
-from mediumProcessing import createAudio
+from mediumProcessing import createAudio, fetchVideo
+#import mediumProcessing
 from dotenv import load_dotenv
 from pathlib import Path
 from gtts import gTTS
@@ -13,15 +14,15 @@ def authenticate():
         user_agent="foo",
         username=USER
     )
-    print("Session acquired. Using user: ", reddit.user.me())
+    print("Session acquired. Welcome user: '", reddit.user.me(),"'\n")
     return reddit
 
 def getPost(reddit):
     print("Please enter the url of the post: ")
     posturl = input()
-    print("fetching post...")
+    print("Fetching post...")
     submission = reddit.submission(url="https://www.reddit.com/r/confession/comments/1098iif/i_stole_money_from_the_rich_kids_in_my_elementary/")
-    print(submission.selftext)
+    print("Post:\n", submission.selftext)
     return submission
 
 def checkPackageDependencies():
@@ -50,8 +51,14 @@ def checkPackageDependencies():
         subprocess.run(["pip", "install", "gTTS"])
     else:
         print("Python gTTS library detected")
+    
+    if importlib.util.find_spec("moviepy") == None:
+        print("Python moviepy library not found. Proceeding to install. . .")
+        subprocess.run(["pip","install","moviepy"])
+    else:
+        print("Python moviepy library detected")
 
-    print("Dependencies satisfied. . .")
+    print("Dependencies satisfied. . .\n")
 
 if __name__ == "__main__":
     checkPackageDependencies()
@@ -66,3 +73,4 @@ if __name__ == "__main__":
     session = authenticate()
     post = getPost(session)
     createAudio(post.selftext)
+    fetchVideo()
