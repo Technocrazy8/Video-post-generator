@@ -1,5 +1,5 @@
 import json, urllib, importlib.util, requests, subprocess, os, praw
-from textToSpeech import createAudio
+from mediumProcessing import createAudio
 from dotenv import load_dotenv
 from pathlib import Path
 from gtts import gTTS
@@ -15,9 +15,6 @@ def authenticate():
     )
     print("Session acquired. Using user: ", reddit.user.me())
     return reddit
-    # getPost(reddit=reddit)
-
-
 
 def getPost(reddit):
     print("Please enter the url of the post: ")
@@ -26,7 +23,6 @@ def getPost(reddit):
     submission = reddit.submission(url="https://www.reddit.com/r/confession/comments/1098iif/i_stole_money_from_the_rich_kids_in_my_elementary/")
     print(submission.selftext)
     return submission
-
 
 def checkPackageDependencies():
     print("Checking package dependencies...")
@@ -54,6 +50,7 @@ def checkPackageDependencies():
         subprocess.run(["pip", "install", "gTTS"])
     else:
         print("Python gTTS library detected")
+
     print("Dependencies satisfied. . .")
 
 if __name__ == "__main__":
