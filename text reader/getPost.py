@@ -60,6 +60,9 @@ def checkPackageDependencies():
 
     print("Dependencies satisfied. . .\n")
 
+def test():
+    fetchVideo()
+
 if __name__ == "__main__":
     checkPackageDependencies()
     load_dotenv()
@@ -70,7 +73,9 @@ if __name__ == "__main__":
     if(USER == None or PASS == None or SEC == None or CID == None):
         print("please create a .env file with your credentials and try again")
         quit()
+    test()
     session = authenticate()
     post = getPost(session)
     createAudio(post.selftext)
-    fetchVideo()
+    video = fetchVideo()
+
