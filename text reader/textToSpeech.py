@@ -1,19 +1,12 @@
-#pip install --upgrade google-cloud-texttospeech
 import subprocess
 import importlib.util
+from gtts import gTTS
 
-def textRead(text):
+def createAudio(text):
+    # while True:
+    #     print("Please pick your language:")
+    #     print("1 - english")
+    print("Producing audio")
     tts = gTTS(text, lang = "en")
     tts.save("test.mp3")
-
-if __name__ == "__main__":
-
-    if importlib.util.find_spec("gtts") == None:
-        print("gTTS not detected \nInstalling gTTS")
-        subprocess.run(["pip", "install", "gTTS"])
-        print("gTTS installed")
-    from gtts import gTTS
-    
-    print("Producing audio")
-    textRead("Hello, World")
-    print("audio produced")
+    print("Audio produced")

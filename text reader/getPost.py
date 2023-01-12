@@ -1,16 +1,11 @@
-import requests
-import json, urllib, importlib.util
-import praw
-import subprocess
-import os
+import json, urllib, importlib.util, requests, subprocess, os, praw
+from textToSpeech import createAudio
 from dotenv import load_dotenv
+from pathlib import Path
+from gtts import gTTS
+
 
 def authenticate():
-    #session = requests.Session()
-    if importlib.util.find_spec("praw") == None:
-        subprocess.run(["pip","install","praw"])
-    if importlib.util.find_spec("requests") == None:
-        subprocess.run(["python","-m","pip","install","requests"])
     reddit = praw.Reddit(
         client_id=CID,
         client_secret=SEC,
@@ -18,36 +13,59 @@ def authenticate():
         user_agent="foo",
         username=USER
     )
-    print(reddit.user.me)
+    print("Session acquired. Using user: ", reddit.user.me())
+    return reddit
+    # getPost(reddit=reddit)
 
 
 
-def getPost(url):
-    res = requests.get('https://www.reddit.com/r/AskReddit/comments/zy5kmq/what_fact_are_you_just_tired_of_explaining_to/')
-    print(res)
-    #foo = json.loads(res.text)
-    #print(res.url)
-    json_url = urllib.request.urlopen('https://www.reddit.com/r/AskReddit/comments/zy5kmq/what_fact_are_you_just_tired_of_explaining_to/')
-    data = json.loads(json_url.read())
-    print (data)
-    #print(res.headers)
-    #print(res.text)
-    foo = res.json()
-    #print(res.json)
-    #res.json()
+def getPost(reddit):
+    print("Please enter the url of the post: ")
+    posturl = input()
+    print("fetching post...")
+    submission = reddit.submission(url="https://www.reddit.com/r/confession/comments/1098iif/i_stole_money_from_the_rich_kids_in_my_elementary/")
+    print(submission.selftext)
+    return submission
+
+
+def checkPackageDependencies():
+    print("Checking package dependencies...")
+
+    if importlib.util.find_spec("dotenv") == None:
+        print("Python dotenv library not found. Proceeding to install. . .")
+        subprocess.run(["pip","install","python-dotenv"])
+    else:
+        print("Python dotenv detected")
+
+    if importlib.util.find_spec("praw") == None:
+        print("Python praw library not found. Proceeding to install. . .")
+        subprocess.run(["pip","install","praw"])
+    else:
+        print("Python library praw detected")
+
+    if importlib.util.find_spec("requests") == None:
+        print("Python requests library not found. Proceeding to install. . .")
+        subprocess.run(["python","-m","pip","install","requests"])
+    else:
+        print("Python requests library detected")
+
+    if importlib.util.find_spec("gtts") == None:
+        print("Python gTTS library not found. Proceeding to install. . .")
+        subprocess.run(["pip", "install", "gTTS"])
+    else:
+        print("Python gTTS library detected")
+    print("Dependencies satisfied. . .")
 
 if __name__ == "__main__":
-    # if importlib.util.find_spec("praw") == None:
-    #     subprocess.run(["pip","install","praw"])
-    if importlib.util.find_spec("dotenv") == None:
-        subprocess.run(["pip","install","python-dotenv"])
+    checkPackageDependencies()
     load_dotenv()
-    # if importlib.util.find_spec("requests") ==None:
-    #     subprocess.run(["pip","install","python-dotenv"])
     USER = os.getenv('DEFAULT_USER')
     PASS = os.getenv('DEFAULT_PASS')
     SEC = os.getenv('SECRET')
-    CID = os.getenv('CLIENT_ID')
-    print(CID)
-    #getPost("ffo")
-    authenticate()
+    CID = os.getenv('C')
+    if(USER == None or PASS == None or SEC == None or CID == None):
+        print("please create a .env file with your credentials and try again")
+        quit()
+    session = authenticate()
+    post = getPost(session)
+    createAudio(post.selftext)
