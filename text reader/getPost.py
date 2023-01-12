@@ -31,13 +31,13 @@ def checkPackageDependencies():
         print("Python dotenv library not found. Proceeding to install. . .")
         subprocess.run(["pip","install","python-dotenv"])
     else:
-        print("Python dotenv detected")
+        print("Python dotenv library detected")
 
     if importlib.util.find_spec("praw") == None:
         print("Python praw library not found. Proceeding to install. . .")
         subprocess.run(["pip","install","praw"])
     else:
-        print("Python library praw detected")
+        print("Python praw library detected")
 
     if importlib.util.find_spec("requests") == None:
         print("Python requests library not found. Proceeding to install. . .")
