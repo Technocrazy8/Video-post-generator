@@ -1,5 +1,6 @@
 import json, urllib, importlib.util, requests, subprocess, os, praw
-from textToSpeech import createAudio
+from mediumProcessing import createAudio, fetchVideo
+#import mediumProcessing
 from dotenv import load_dotenv
 from pathlib import Path
 from gtts import gTTS
@@ -13,20 +14,16 @@ def authenticate():
         user_agent="foo",
         username=USER
     )
-    print("Session acquired. Using user: ", reddit.user.me())
+    print("Session acquired. Welcome user: '", reddit.user.me(),"'\n")
     return reddit
-    # getPost(reddit=reddit)
-
-
 
 def getPost(reddit):
     print("Please enter the url of the post: ")
     posturl = input()
-    print("fetching post...")
+    print("Fetching post...")
     submission = reddit.submission(url="https://www.reddit.com/r/confession/comments/1098iif/i_stole_money_from_the_rich_kids_in_my_elementary/")
-    print(submission.selftext)
+    print("Post:\n", submission.selftext)
     return submission
-
 
 def checkPackageDependencies():
     print("Checking package dependencies...")
@@ -35,13 +32,13 @@ def checkPackageDependencies():
         print("Python dotenv library not found. Proceeding to install. . .")
         subprocess.run(["pip","install","python-dotenv"])
     else:
-        print("Python dotenv detected")
+        print("Python dotenv library detected")
 
     if importlib.util.find_spec("praw") == None:
         print("Python praw library not found. Proceeding to install. . .")
         subprocess.run(["pip","install","praw"])
     else:
-        print("Python library praw detected")
+        print("Python praw library detected")
 
     if importlib.util.find_spec("requests") == None:
         print("Python requests library not found. Proceeding to install. . .")
@@ -54,7 +51,17 @@ def checkPackageDependencies():
         subprocess.run(["pip", "install", "gTTS"])
     else:
         print("Python gTTS library detected")
-    print("Dependencies satisfied. . .")
+    
+    if importlib.util.find_spec("moviepy") == None:
+        print("Python moviepy library not found. Proceeding to install. . .")
+        subprocess.run(["pip","install","moviepy"])
+    else:
+        print("Python moviepy library detected")
+
+    print("Dependencies satisfied. . .\n")
+
+def test():
+    fetchVideo()
 
 if __name__ == "__main__":
     checkPackageDependencies()
@@ -66,6 +73,9 @@ if __name__ == "__main__":
     if(USER == None or PASS == None or SEC == None or CID == None):
         print("please create a .env file with your credentials and try again")
         quit()
+    test()
     session = authenticate()
     post = getPost(session)
     createAudio(post.selftext)
+    video = fetchVideo()
+
