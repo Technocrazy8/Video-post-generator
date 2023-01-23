@@ -14,7 +14,7 @@ def createAudio(text):
 def fetchVideo():
     print("Please specify which video you would like to use or enter 'default' to use the provided one.")
     video = input()
-    if(video == "default" or video == "d" or video == "Default"):
+    if(video == "default" or video == "d" or video == "Default" or video =="D"):
         print("\nUsing 'default' as video")
     else:
         print("\nUsing '", video,"' as video")
