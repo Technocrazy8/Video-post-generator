@@ -4,10 +4,14 @@ from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
 from gtts import gTTS
 from pathlib import Path
 
+AUDIO_FILE_LENGTH = None
+AUDIO_FILE = None
+
 def createAudio(text):
     print("\nProducing audio")
     tts = gTTS(text, lang = "en")
-    tts.save("test.mp3")
+    tts.save("test.wav")
+    AUDIO_FILE_LENGTH = 10
     print("Audio produced\n")
     #fetchVideo()
 
@@ -24,7 +28,12 @@ def fetchVideo():
     p = Path(vidpath)
     if(p == None):
         return fetchVideo()
-    vid = open(p)
+    try:
+        vid = open(p)
+    except:
+        print("An error occured while fetching video\n")
+        print("Perhaps the video name was spelt wrong?")
+        return fetchVideo()
     video = VideoFileClip(vid)
     if(video == None):
         return fetchVideo()

@@ -1,4 +1,4 @@
-import json, urllib, importlib.util, requests, subprocess, os, praw
+import json, urllib, importlib.util, subprocess, os, praw, requests
 from mediumProcessing import createAudio, fetchVideo
 #import mediumProcessing
 from dotenv import load_dotenv
@@ -77,5 +77,5 @@ if __name__ == "__main__":
     session = authenticate()
     post = getPost(session)
     createAudio(post.selftext)
-    video = fetchVideo()
+    #video = fetchVideo()
 
