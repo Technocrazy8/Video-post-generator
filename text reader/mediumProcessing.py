@@ -1,5 +1,7 @@
 import subprocess
 import importlib.util
+import mutagen
+from mutagen.wave import WAVE
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
 from gtts import gTTS
 from pathlib import Path
@@ -11,7 +13,7 @@ def createAudio(text):
     print("\nProducing audio")
     tts = gTTS(text, lang = "en")
     tts.save("test.wav")
-    AUDIO_FILE_LENGTH = 10
+    AUDIO_FILE_LENGTH = int(WAVE("test.wav").info.length)
     print("Audio produced\n")
     #fetchVideo()
 

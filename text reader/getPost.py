@@ -1,4 +1,4 @@
-import json, urllib, importlib.util, subprocess, os, praw, requests
+import json, urllib, importlib.util, subprocess, os, praw, requests, mutagen
 from mediumProcessing import createAudio, fetchVideo
 #import mediumProcessing
 from dotenv import load_dotenv
@@ -57,6 +57,12 @@ def checkPackageDependencies():
         subprocess.run(["pip","install","moviepy"])
     else:
         print("Python moviepy library detected")
+
+    if importlib.util.find_spec("mutagen") == None:
+        print("Python mutagen library not found. Proceeding to install. . .")
+        subprocess.run(["pip","install","mutagen"])
+    else:
+        print("Python mutagen library detected")
 
     print("Dependencies satisfied. . .\n")
 
