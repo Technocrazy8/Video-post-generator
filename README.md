@@ -1,4 +1,6 @@
 # Video-post-generator
+** THIS IS A WORK IN PROGRESS AND IS INCOMPLETE**
+
 A python script that overlays videos with reddit posts.
 It currently only works on windows. There is no plan to implement a linux version as of now.
 
