@@ -1,6 +1,3 @@
-import subprocess
-import importlib.util
-import mutagen
 from mutagen.wave import WAVE
 from moviepy.editor import VideoFileClip, AudioFileClip, CompositeAudioClip
 from gtts import gTTS
@@ -9,13 +6,17 @@ from pathlib import Path
 AUDIO_FILE_LENGTH = None
 AUDIO_FILE = None
 
+def runFetchVideo(text):
+    createAudio(text)
+    video = fetchVideo()
+    return video
+
 def createAudio(text):
     print("\nProducing audio")
     tts = gTTS(text, lang = "en")
     tts.save("test.wav")
     AUDIO_FILE_LENGTH = int(WAVE("test.wav").info.length)
     print("Audio produced\n")
-    #fetchVideo()
 
 def fetchVideo():
     print("Please specify which video you would like to use or enter 'default' to use the provided one.")
@@ -36,8 +37,11 @@ def fetchVideo():
         print("An error occured while fetching video\n")
         print("Perhaps the video name was spelt wrong?")
         return fetchVideo()
+    
     video = VideoFileClip(vid)
+
     if(video == None):
+        print("Error fetching video")
         return fetchVideo()
     #print(list(p.glob("*")))
     #if ()

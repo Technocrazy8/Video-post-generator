@@ -10,6 +10,6 @@ The next step is to merge the audio and video.
 Before running the script, please assure that you have a .env file with your Reddit credentials and Bot keys.
 Place this .env file in the 'text reader' file.
 
-To run the script, open powershell or command prompt and run 'python getPost.py'.
+To run the script, open powershell or command prompt and run 'python3 launcher.py'.
 The script will check for dependencies and install them if necessary.
 
